@@ -1,0 +1,109 @@
+<!-- Import Polymer -->
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+
+<script src="../bower_components/highcharts/adapters/standalone-framework.js"></script>
+<script src="../bower_components/highcharts/highcharts.js"></script>
+<script src="../bower_components/highcharts/modules/exporting.js"></script>
+<script src="theme.js"></script>
+
+<!-- http://stackoverflow.com/questions/24359417/polymer-loading-core-ajax-inside-an-element
+-->
+
+<!-- Define your custom element -->
+<polymer-element name="highcharts-lines" attributes="title url params">
+
+    <template>
+        <core-ajax auto url="{{url}}" params="{{params}}" handleAs="json" on-core-response="{{handleAjax}}"></core-ajax>
+
+
+        <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+    </template>
+
+    <script>
+
+        Highcharts.setOptions({
+            lang: {
+                months: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',  'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+                weekdays: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi']
+            }
+        });
+
+
+
+
+        Polymer('highcharts-lines', {
+
+            title:'',
+            data:null,
+
+
+            // Fires when an instance of the element is created
+            created: function () {
+            },
+
+            // Fires when the element’s initial set of children and siblings are guaranteed to exist
+            domReady: function () {
+            },
+
+            // Fires when the "<polymer-element>" has been fully prepared
+            ready: function () {
+             },
+
+            // Fires when the element was inserted into the document
+            attached: function() {},
+
+            // Fires when the element was removed from the document
+            detached: function() {},
+
+            // Fires when an attribute was added, removed, or updated
+            attributeChanged: function(attr, oldVal, newVal) {},
+
+            handleAjax: function(response){
+                this.data = response.detail.response
+                this.hc()
+            },
+
+            hc: function() {
+
+                console.log(this.data)
+
+                var chart = new Highcharts.Chart({
+                    chart: {
+                        renderTo:  this.$.container,
+                        type: 'line'
+                    },
+                    title: {
+                        text: this.title
+                    },
+                    xAxis: {
+                        type: 'datetime',
+                        dateTimeLabelFormats: { // don't display the dummy year
+                            month: '%e. %b',
+                            year: '%b'
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+                        title:{
+                            enabled:false
+                        }
+                    },
+                   /* plotOptions: {
+                        line: {
+                            dataLabels: {
+                            //    enabled: true
+                            },
+                            enableMouseTracking: false
+                        }
+                    },*/
+
+
+                    series: this.data
+
+                });
+            }
+        });
+    </script>
+
+</polymer-element>
