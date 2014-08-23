@@ -24,7 +24,7 @@ module.exports = function(grunt) {
                 src: ['src/*'],
                 dest: 'dist/',
                 replacements: [{
-                    from: '../bower_components',
+                    from: 'bower_components',
                     to: '..'
                 }]
             }
