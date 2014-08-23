@@ -28,7 +28,7 @@ Highcharts.theme = {
         }
     },
     tooltip: {
-        crosshairs: [true],
+     //   crosshairs: [true],
         borderWidth: 0,
         backgroundColor: 'rgba(219,219,216,0.8)',
         shadow: false
