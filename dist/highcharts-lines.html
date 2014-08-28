@@ -29,9 +29,6 @@
             }
         });
 
-
-
-
         Polymer('highcharts-lines', {
 
             title:'',
@@ -60,13 +57,22 @@
             attributeChanged: function(attr, oldVal, newVal) {},
 
             handleAjax: function(response){
-                this.data = response.detail.response
+                var data = response.detail.response
+                  , date
+
+                for(var serie=0; serie<data.length; serie++){
+                    for(var n=0; n<data[serie]['data'].length; n++){
+                        date = new Date(data[serie]['data'][n][0] * 1000)
+                        data[serie]['data'][n][0] = new Date(date).getTime();
+                    }
+                }
+
+                this.data = data;
+
                 this.hc()
             },
 
             hc: function() {
-
-                console.log(this.data)
 
                 var chart = new Highcharts.Chart({
                     chart: {
